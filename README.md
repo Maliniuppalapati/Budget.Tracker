@@ -2,7 +2,7 @@
 
 ![Budget Planner Cover](https://img.shields.io/badge/MERN_Stack-Project-blue?style=for-the-badge&logo=react)
 ![AI Integrated](https://img.shields.io/badge/AI_Powered-Gemini-purple?style=for-the-badge&logo=google)
-![Status](https://img.shields.io/badge/Status-Placement_Ready-success?style=for-the-badge)
+
 
 A highly responsive, full-stack personal finance management application built with the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). This project is designed to help users track their incomes and expenses, enforce budget limits, visualize their financial health, and receive **personalized AI-driven financial advice**.
 
