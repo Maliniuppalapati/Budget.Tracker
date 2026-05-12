@@ -4,8 +4,10 @@ import Charts from "../components/Charts";
 import AddIncome from "../components/AddIncome"; // Import component
 import AddExpense from "../components/AddExpense"; // Import component
 import TransactionList from "../components/TransactionList"; // Import component
-import DownloadReport from "../components/DownloadReport"; // Import component
-import StatCard from "../components/StatCard"; // Import component
+import DownloadReport from "../components/DownloadReport";
+import DownloadCSV from "../components/DownloadCSV";
+import StatCard from "../components/StatCard";
+import AIAdvice from "../components/AIAdvice";
 import "../styles.css";
 
 export default function Dashboard() {
@@ -55,6 +57,10 @@ export default function Dashboard() {
         {/* Pass balance to enforce the check on the frontend, although backend also checks */}
       </div>
 
+      <div className="ai-section">
+        <AIAdvice totalExpenses={totalExpenses} budgetLimit={user?.monthlyBudget || 20000} />
+      </div>
+
       <div className="charts-section">
         <Charts incomes={incomes} expenses={expenses} />
       </div>
@@ -65,7 +71,12 @@ export default function Dashboard() {
           expenses={expenses}
           refresh={fetchData}
         />
-        {userId && <DownloadReport userId={userId} />}
+        {userId && (
+          <div style={{display: 'flex', justifyContent: 'center', gap: '1rem'}}>
+            <DownloadReport userId={userId} />
+            <DownloadCSV userId={userId} />
+          </div>
+        )}
       </div>
     </div>
   );

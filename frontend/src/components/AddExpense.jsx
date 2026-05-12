@@ -40,9 +40,43 @@ export default function AddExpense({ refresh, balance }) {
     }
   };
 
+  const [smartText, setSmartText] = useState("");
+  const [smartLoading, setSmartLoading] = useState(false);
+
+  const handleSmartCategorize = async () => {
+    if (!smartText) return;
+    setSmartLoading(true);
+    try {
+      const res = await API.post("/ai/categorize", { text: smartText });
+      setForm({
+        amount: res.data.amount || "",
+        category: res.data.category || "General",
+        note: res.data.note || smartText
+      });
+      setSmartText("");
+    } catch (err) {
+      alert("Error with smart categorization: " + (err.response?.data?.msg || err.message));
+    }
+    setSmartLoading(false);
+  };
+
   return (
     <div className="card" style={{ minWidth: 320 }}>
       <h4>Add Expense</h4>
+      
+      <div style={{display: 'flex', gap: '10px', marginBottom: '1rem', background: 'rgba(139, 92, 246, 0.1)', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(139, 92, 246, 0.3)'}}>
+        <input 
+          className="input" 
+          placeholder="e.g. Bought a pizza for 500" 
+          style={{margin: 0}}
+          value={smartText}
+          onChange={e => setSmartText(e.target.value)}
+        />
+        <button className="btn ai-btn" style={{marginTop: 0, width: 'auto', whiteSpace: 'nowrap'}} onClick={handleSmartCategorize} disabled={smartLoading}>
+          {smartLoading ? "..." : "✨ Smart Add"}
+        </button>
+      </div>
+
       <input
         className="input"
         type="number" // Use type="number" for amount

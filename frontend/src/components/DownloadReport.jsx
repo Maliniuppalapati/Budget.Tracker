@@ -16,5 +16,5 @@ export default function DownloadReport({ userId }) {
       alert('Error downloading report');
     }
   };
-  return <button className="btn" onClick={download}>Download PDF</button>;
+  return <button className="btn" style={{width: 'auto', background: 'linear-gradient(135deg, #ef4444, #b91c1c)'}} onClick={download}>Download PDF</button>;
 }

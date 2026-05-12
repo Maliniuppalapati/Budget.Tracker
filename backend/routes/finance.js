@@ -76,4 +76,27 @@ router.get('/report/:id', auth, async (req, res) => {
   } catch (err) { res.status(500).json({ msg: err.message }); }
 });
 
+// CSV export
+router.get('/export-csv/:id', auth, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const expenses = await Expense.find({ userId }).sort({ date: -1 });
+    const incomes = await Income.find({ userId }).sort({ date: -1 });
+
+    let csv = 'Date,Type,Category/Source,Amount,Note\n';
+    
+    incomes.forEach(i => {
+      csv += `${new Date(i.date).toLocaleDateString()},Income,${i.source},${i.amount},${i.note || ''}\n`;
+    });
+    
+    expenses.forEach(e => {
+      csv += `${new Date(e.date).toLocaleDateString()},Expense,${e.category},${e.amount},${e.note || ''}\n`;
+    });
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=budget_transactions_${userId}.csv`);
+    res.send(csv);
+  } catch (err) { res.status(500).json({ msg: err.message }); }
+});
+
 module.exports = router;

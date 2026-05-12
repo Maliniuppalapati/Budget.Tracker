@@ -12,7 +12,7 @@ router.post('/register', async (req, res) => {
     const user = new User({ name, email, password });
     await user.save();
     const token = jwt.sign({ id: user._id, name: user.name }, process.env.JWT_SECRET);
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email, monthlyBudget: user.monthlyBudget } });
   } catch (err) { res.status(500).json({ msg: err.message }); }
 });
 
@@ -25,7 +25,16 @@ router.post('/login', async (req, res) => {
     const ok = await u.matchPassword(password);
     if (!ok) return res.status(400).json({ msg: 'Invalid credentials' });
     const token = jwt.sign({ id: u._id, name: u.name }, process.env.JWT_SECRET);
-    res.json({ token, user: { id: u._id, name: u.name, email: u.email } });
+    res.json({ token, user: { id: u._id, name: u.name, email: u.email, monthlyBudget: u.monthlyBudget } });
+  } catch (err) { res.status(500).json({ msg: err.message }); }
+});
+
+const auth = require('../middleware/auth');
+router.put('/budget', auth, async (req, res) => {
+  try {
+    const { monthlyBudget } = req.body;
+    const u = await User.findByIdAndUpdate(req.user.id, { monthlyBudget }, { new: true });
+    res.json({ monthlyBudget: u.monthlyBudget });
   } catch (err) { res.status(500).json({ msg: err.message }); }
 });
 

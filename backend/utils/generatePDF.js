@@ -18,8 +18,8 @@ module.exports = (data, res) => {
     // This is the strongest defense against hidden characters or weird locale prefixes.
     const sanitizedNumber = formattedNumber.replace(/[^0-9.]/g, ''); 
 
-    // 3. Explicitly return the Rupee symbol followed ONLY by the sanitized number string.
-    return `₹${sanitizedNumber}`;
+    // 3. Explicitly return the Rs. symbol followed ONLY by the sanitized number string.
+    return `Rs. ${sanitizedNumber}`;
   };
 
   doc.fontSize(14).text('Summary', { underline: true });

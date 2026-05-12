@@ -1,105 +1,99 @@
-# 💰 Budget Planner: Personal Finance Tracker
+# 🚀 AI-Powered Budget Planner
 
-Welcome to the Budget Planner repository! This is a full-stack web application designed to help users track their income and expenses, manage their monthly budget, and visualize financial trends through interactive charts.
+![Budget Planner Cover](https://img.shields.io/badge/MERN_Stack-Project-blue?style=for-the-badge&logo=react)
+![AI Integrated](https://img.shields.io/badge/AI_Powered-Gemini-purple?style=for-the-badge&logo=google)
+![Status](https://img.shields.io/badge/Status-Placement_Ready-success?style=for-the-badge)
 
-## ✨ Features
+A highly responsive, full-stack personal finance management application built with the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). This project is designed to help users track their incomes and expenses, enforce budget limits, visualize their financial health, and receive **personalized AI-driven financial advice**.
 
-This application provides a comprehensive set of tools for personal finance management:
+---
 
-* **User Authentication:** Secure registration and login using JWT (JSON Web Tokens).
-* **Income & Expense Tracking:** Easily add, view, and delete detailed income and expense transactions (including amount, category/source, and notes).
-* **Real-time Balance Check:** Prevents users from adding an expense if it exceeds their current available balance.
-* **Interactive Dashboard:** Provides a clear overview of financial health with three types of charts:
-    * **Income vs. Expense Pie Chart:** Comparison of total income and total expenses.
-    * **Expenses by Category Pie Chart:** Visualization of spending proportion across different categories.
-    * **Monthly Trend Line Chart:** Tracks the movement of income and expenses over time.
-* **PDF Reporting:** Generate and download a detailed summary PDF report of all transactions.
-* **Automated Summaries (Backend):** Includes a cron job to potentially send weekly spending summary emails (requires proper email configuration in `.env`).
+## ✨ Enterprise-Grade Features
+
+* 🔒 **Secure User Authentication:** Stateless authentication using JWT (JSON Web Tokens) and bcrypt password hashing.
+* 💸 **Intelligent Expense Tracking:** Add, manage, and categorize expenses. The system automatically enforces a client & server-side check to prevent expenses from exceeding available balance.
+* 🤖 **AI Smart Add (NLP):** Type natural language like *"Bought a coffee for 250"* and the integrated AI automatically extracts the amount and categorizes it correctly.
+* 🧠 **AI Financial Advisor:** Powered by Google's Gemini LLM. It analyzes the user's spending habits across different categories and provides personalized, actionable financial advice.
+* 🎯 **Dynamic Budget Goals:** Users have a monthly budget limit. A dynamic progress bar tracks usage and visually warns the user when they exceed 90% of their limit.
+* 📊 **Interactive Data Visualization:** Implemented dynamic Pie and Line charts using Recharts to visualize income vs. expenses and category-wise spending.
+* 📄 **Rich Data Export:** Generate and download highly formatted **PDF Reports** (via PDFKit) and **CSV Files** for Excel integration.
+* 🎨 **Premium UI/UX:** A stunning, modern dark theme utilizing glassmorphism, smooth CSS animations, and gradient accents for a "wow" factor.
+
+---
 
 ## 💻 Tech Stack
 
-The Budget Planner is built using the MERN stack and key data visualization libraries.
+**Frontend:**
+* React.js (Vite Build Tool)
+* Context API / React Router DOM
+* Recharts (Data Visualization)
+* Axios (API Client)
+* Vanilla CSS (Premium Dark Theme & Variables)
 
-### Frontend
-| Technology | Description |
-| :--- | :--- |
-| **React** | Core library for building the user interface. |
-| **React Router** | For client-side routing and page navigation. |
-| **Axios** | HTTP client for API requests. |
-| **Recharts** | Powerful library used to generate the vibrant pie and line charts. |
+**Backend:**
+* Node.js & Express.js
+* MongoDB & Mongoose (ODM)
+* `@google/generative-ai` (Gemini API Integration)
+* `jsonwebtoken` & `bcryptjs` (Security)
+* `pdfkit` (Report Generation)
 
-### Backend
-| Technology | Description | |
-| :--- | :--- |
-| **Node.js & Express** | Runtime environment and minimal web framework. |
-| **MongoDB & Mongoose** | NoSQL database and MongoDB object modeling tool. |
-| **JWT** | Used for secure, stateless user authentication. |
-| **BcryptJS** | For hashing and securing user passwords. |
-| **PDFKit** | Used to generate the detailed PDF financial reports. |
-| **Node-Cron** | Schedules tasks like sending weekly summaries. |
+---
 
 ## 🚀 Getting Started
 
-Follow these steps to set up and run the project locally.
+Follow these instructions to get a copy of the project up and running on your local machine.
 
 ### Prerequisites
+* Node.js (v16 or higher)
+* MongoDB Atlas Account (or local MongoDB server)
+* Google Gemini API Key (Optional: The application features a robust built-in local fallback, so AI features run flawlessly without an API key).
 
-* Node.js (version 14 or higher)
-* MongoDB Atlas or local installation
-* `npm` or `yarn`
+### 1. Backend Setup
+1. Open a terminal and navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the `backend` folder and add the following variables:
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb+srv://<your_username>:<your_password>@<cluster_url>
+   JWT_SECRET=your_super_secret_jwt_key
+   ```
+   *(Note: The `GEMINI_API_KEY` is entirely optional. If you choose not to provide a key, the application will safely bypass Google's API and seamlessly fall back to a built-in local heuristic algorithm. This ensures that the Smart Add and AI Advisor features will work instantly and perfectly for offline demos or interviews without needing external cloud access).*
+4. Start the backend server:
+   ```bash
+   npm run dev
+   ```
 
-### 1. Backend Setup (`/backend`)
-
-1.  **Navigate** to the `backend` directory.
-    ```bash
-    cd backend
-    ```
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    # or yarn install
-    ```
-3.  **Create `.env` file:** Create a file named `.env` in the root of the `/backend` directory and add your configuration variables:
-
-    ```env
-    MONGO_URI=<YOUR_MONGO_DB_CONNECTION_STRING>
-    JWT_SECRET=<A_LONG_RANDOM_STRING>
-    PORT=5000
-
-    # Optional: For email cron job
-    # EMAIL_USER=your_email@gmail.com
-    # EMAIL_PASS=your_app_password
-    ```
-
-4.  **Start the server:**
-    ```bash
-    npm run dev 
-    # The server will run on http://localhost:5000
-    ```
-
-### 2. Frontend Setup (`/frontend`)
-
-1.  **Navigate** to the `frontend` directory.
-    ```bash
-    cd ../frontend
-    ```
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    # or yarn install
-    ```
-3.  **Start the client:**
-    ```bash
-    npm start
-    # The application will open in your browser at http://localhost:3000
-    ```
-
-## 📝 Usage
-
-1.  **Register** a new account on the `/register` page.
-2.  **Log in** on the `/login` page.
-3.  Navigate to the `/dashboard`.
-4.  Use the **Add Income** and **Add Expense** cards to record your transactions.
-5.  View your updated financial status, interactive charts, and transaction history immediately below.
+### 2. Frontend Setup
+1. Open a second terminal and navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+4. Open your browser and navigate to `http://localhost:5173`.
 
 ---
+
+## 🎯 Usage & Testing Guide
+1. **Register** a new account on the landing page.
+2. Use the **Smart Add** feature by typing a sentence like *"Purchased a new laptop for 45000"* and watch the AI auto-fill the forms.
+3. Observe the **Budget Usage Progress Bar** change colors as you add expenses.
+4. Click **"Get Personalized Advice"** to receive AI-generated financial tips based on your specific transaction history.
+5. Export your data using the **Download PDF** and **Download CSV** buttons at the bottom of the dashboard.
+
+---
+
+## 🤝 Contact
+Developed by **Geya Malini**. Designed to demonstrate proficiency in Full-Stack Development, UI/UX Design, and Modern AI Integrations.
