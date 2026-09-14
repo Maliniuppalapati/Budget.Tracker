@@ -12,7 +12,6 @@ app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/finance', require('./routes/finance'));
-app.use('/api/stats', require('./routes/stats'));
 app.use('/api/ai', require('./routes/ai'));
 
 // start weekly cron for summaries (optional)
