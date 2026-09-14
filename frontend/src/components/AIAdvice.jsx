@@ -20,17 +20,21 @@ export default function AIAdvice({ totalExpenses, budgetLimit }) {
 
   return (
     <div className="card ai-card">
-      <h3 style={{marginTop: 0}}>✨ AI Financial Advisor</h3>
+      <h3 style={{ marginTop: 0 }}>🤖 AI Financial Advisor</h3>
       
       <div style={{ marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
           <span>Budget Usage</span>
-          <span>{progress.toFixed(1)}% of Rs. {budgetLimit || 20000}</span>
+          <span>{progress.toFixed(1)}% of Rs. {(budgetLimit || 20000).toLocaleString()}</span>
         </div>
         <div className="progress-container">
           <div className="progress-bar" style={{ width: `${progress}%` }}></div>
         </div>
-        {progress >= 90 && <p style={{color: 'var(--accent-danger)', fontSize: '0.85rem', marginTop: '0.5rem'}}>⚠️ You are approaching your budget limit!</p>}
+        {progress >= 90 && (
+          <p style={{ color: 'var(--accent-danger)', fontSize: '0.85rem', marginTop: '0.5rem' }}>
+            ⚠️ Warning: You are approaching or have exceeded your budget limit!
+          </p>
+        )}
       </div>
 
       <button className="btn ai-btn" onClick={getAdvice} disabled={loading}>

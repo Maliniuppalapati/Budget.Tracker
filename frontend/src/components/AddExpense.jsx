@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import API from "../utils/api";
 
-// Receive 'balance' prop from Dashboard
 export default function AddExpense({ refresh, balance }) {
   const [form, setForm] = useState({
     amount: "",
@@ -18,7 +17,6 @@ export default function AddExpense({ refresh, balance }) {
       return;
     }
 
-    // Client-side balance check (your requirement)
     if (expenseAmount > balance) {
       alert("Expense exceeds available balance! Cannot add.");
       return;
@@ -64,22 +62,22 @@ export default function AddExpense({ refresh, balance }) {
     <div className="card" style={{ minWidth: 320 }}>
       <h4>Add Expense</h4>
       
-      <div style={{display: 'flex', gap: '10px', marginBottom: '1rem', background: 'rgba(139, 92, 246, 0.1)', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(139, 92, 246, 0.3)'}}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '1rem', background: 'rgba(139, 92, 246, 0.1)', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
         <input 
           className="input" 
           placeholder="e.g. Bought a pizza for 500" 
-          style={{margin: 0}}
+          style={{ margin: 0 }}
           value={smartText}
           onChange={e => setSmartText(e.target.value)}
         />
-        <button className="btn ai-btn" style={{marginTop: 0, width: 'auto', whiteSpace: 'nowrap'}} onClick={handleSmartCategorize} disabled={smartLoading}>
-          {smartLoading ? "..." : "✨ Smart Add"}
+        <button className="btn ai-btn" style={{ marginTop: 0, width: 'auto', whiteSpace: 'nowrap' }} onClick={handleSmartCategorize} disabled={smartLoading}>
+          {smartLoading ? "..." : "🪄 Smart Add"}
         </button>
       </div>
 
       <input
         className="input"
-        type="number" // Use type="number" for amount
+        type="number"
         placeholder="Amount"
         value={form.amount}
         onChange={(e) => setForm({ ...form, amount: e.target.value })}

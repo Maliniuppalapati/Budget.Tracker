@@ -8,7 +8,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// Adjusted color set for better visibility with multiple categories
 const COLORS = [
   "#0088FE",
   "#00C49F",
@@ -23,19 +22,16 @@ const COLORS = [
 ];
 
 export default function Charts({ incomes = [], expenses = [] }) {
-  // Show nothing if both incomes and expenses are empty
   if (!incomes.length && !expenses.length) return null;
 
   const totalIncome = incomes.reduce((a, b) => a + b.amount, 0);
   const totalExpenses = expenses.reduce((a, b) => a + b.amount, 0);
 
-  // 1. Income vs Expense Pie Data
   const incomeVsExpensePieData = [
     { name: "Total Income", value: totalIncome },
     { name: "Total Expenses", value: totalExpenses },
   ].filter((d) => d.value > 0);
 
-  // 2. Expenses by Category Pie Data (Spending Proportion)
   const expenseCategoryData = expenses.reduce((acc, expense) => {
     const category = expense.category || "Uncategorized";
     acc[category] = (acc[category] || 0) + expense.amount;
@@ -50,9 +46,7 @@ export default function Charts({ incomes = [], expenses = [] }) {
     .filter((d) => d.value > 0);
 
   return (
-    // Update container class for two charts
     <div className="charts-container-two">
-      {/* 1. Income vs Expense Pie Chart */}
       <div className="chart-box-pie">
         <h4>Income vs Expense</h4>
         <ResponsiveContainer width="100%" height="100%">
@@ -61,12 +55,12 @@ export default function Charts({ incomes = [], expenses = [] }) {
               data={incomeVsExpensePieData}
               dataKey="value"
               nameKey="name"
-              outerRadius={90} // Slightly larger radius for clarity
+              outerRadius={90}
               labelLine={false}
               label={({ name, percent }) =>
                 `${name}: ${(percent * 100).toFixed(0)}%`
-              } // Clearer label format
-              paddingAngle={2} // Separation between slices
+              }
+              paddingAngle={2}
             >
               {incomeVsExpensePieData.map((entry, index) => (
                 <Cell
@@ -75,13 +69,12 @@ export default function Charts({ incomes = [], expenses = [] }) {
                 />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => `₹${value.toLocaleString()}`} />
+            <Tooltip formatter={(value) => `Rs. ${value.toLocaleString()}`} />
             <Legend layout="horizontal" align="center" verticalAlign="bottom" />
           </PieChart>
         </ResponsiveContainer>
       </div>
 
-      {/* 2. Expenses by Category Pie Chart */}
       <div className="chart-box-pie">
         <h4>Expenses by Category</h4>
         <ResponsiveContainer width="100%" height="100%">
@@ -90,7 +83,7 @@ export default function Charts({ incomes = [], expenses = [] }) {
               data={categoryPieData}
               dataKey="value"
               nameKey="name"
-              outerRadius={90} // Same larger radius for clarity
+              outerRadius={90}
               labelLine={false}
               label={({ name, percent }) =>
                 `${name}: ${(percent * 100).toFixed(0)}%`
@@ -104,7 +97,7 @@ export default function Charts({ incomes = [], expenses = [] }) {
                 />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => `₹${value.toLocaleString()}`} />
+            <Tooltip formatter={(value) => `Rs. ${value.toLocaleString()}`} />
             <Legend layout="horizontal" align="center" verticalAlign="bottom" />
           </PieChart>
         </ResponsiveContainer>

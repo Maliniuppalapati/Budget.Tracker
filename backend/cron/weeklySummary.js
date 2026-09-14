@@ -12,7 +12,7 @@ cron.schedule('0 9 * * MON', async () => {
       const recent = await Expense.find({ userId: u._id, date: { $gte: weekAgo } });
       const total = recent.reduce((a, b) => a + b.amount, 0);
       if (u.email) {
-        sendEmail(u.email, 'Weekly Summary', `Hello ${u.name}, your spending in last 7 days: ₹${total}`);
+        sendEmail(u.email, 'Weekly Summary', `Hello ${u.name}, your spending in last 7 days: Rs. ${total}`);
       }
     }
   } catch (err) { console.error('Weekly cron error', err.message); }

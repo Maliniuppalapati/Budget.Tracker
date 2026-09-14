@@ -24,7 +24,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route
           path="/dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/login" />}
+          element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />}
         />
         <Route
           path="/login"
@@ -39,7 +39,19 @@ export default function App() {
             />
           }
         />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/register"
+          element={
+            <Register
+              onLogin={(data) => {
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+                setAuthToken(data.token);
+                setUser(data.user);
+              }}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

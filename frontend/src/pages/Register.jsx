@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import API from "../utils/api";
 import { useNavigate } from "react-router-dom";
 
-export default function Register() {
+export default function Register({ onLogin }) {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const nav = useNavigate();
 
@@ -12,8 +12,12 @@ export default function Register() {
     }
     try {
       const res = await API.post("/auth/register", form);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      if (onLogin) {
+        onLogin(res.data);
+      } else {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+      }
       nav("/dashboard");
     } catch (err) {
       alert(err.response?.data?.msg || "Registration failed");

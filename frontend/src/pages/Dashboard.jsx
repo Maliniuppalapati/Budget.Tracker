@@ -1,22 +1,24 @@
 import React, { useEffect, useState, useCallback } from "react";
 import API from "../utils/api";
 import Charts from "../components/Charts";
-import AddIncome from "../components/AddIncome"; // Import component
-import AddExpense from "../components/AddExpense"; // Import component
-import TransactionList from "../components/TransactionList"; // Import component
+import AddIncome from "../components/AddIncome";
+import AddExpense from "../components/AddExpense";
+import SetBudget from "../components/SetBudget";
+import TransactionList from "../components/TransactionList";
 import DownloadReport from "../components/DownloadReport";
 import DownloadCSV from "../components/DownloadCSV";
 import StatCard from "../components/StatCard";
 import AIAdvice from "../components/AIAdvice";
 import "../styles.css";
 
-export default function Dashboard() {
+export default function Dashboard({ user: propUser, setUser: propSetUser }) {
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [balance, setBalance] = useState(0);
-  const user = JSON.parse(localStorage.getItem("user")); // Get user info
+  const [currentUser, setCurrentUser] = useState(() =>
+    propUser || JSON.parse(localStorage.getItem("user")) || {}
+  );
 
-  // useCallback memoizes the function to prevent unnecessary re-fetches
   const fetchData = useCallback(async () => {
     try {
       const res = await API.get("/finance/dashboard");
@@ -28,37 +30,43 @@ export default function Dashboard() {
     } catch (err) {
       console.error(err.response?.data?.msg || err.message);
     }
-  }, []); // Empty dependency array means it's created once
+  }, []);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // Existing addIncome and addExpense logic is handled within the imported components.
-  // The simple inline forms are removed.
+  const handleBudgetUpdate = (newBudget) => {
+    const updatedUser = { ...currentUser, monthlyBudget: newBudget };
+    setCurrentUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    if (propSetUser) propSetUser(updatedUser);
+  };
 
   const totalIncome = incomes.reduce((a, b) => a + b.amount, 0);
   const totalExpenses = expenses.reduce((a, b) => a + b.amount, 0);
-  const userId = user?.id; // Safely get userId
+  const userId = currentUser?.id || currentUser?._id;
+  const monthlyBudget = currentUser?.monthlyBudget || 20000;
 
   return (
     <div className="dashboard-container">
       <h2>Dashboard 📊</h2>
 
       <div className="stats-cards">
-        <StatCard title="Total Income" value={`₹${totalIncome}`} />
-        <StatCard title="Total Expenses" value={`₹${totalExpenses}`} />
-        <StatCard title="Current Balance" value={`₹${balance}`} />
+        <StatCard title="Total Income" value={`Rs. ${totalIncome.toLocaleString()}`} />
+        <StatCard title="Total Expenses" value={`Rs. ${totalExpenses.toLocaleString()}`} />
+        <StatCard title="Current Balance" value={`Rs. ${balance.toLocaleString()}`} />
+        <StatCard title="Monthly Budget" value={`Rs. ${monthlyBudget.toLocaleString()}`} />
       </div>
 
       <div className="add-section">
         <AddIncome refresh={fetchData} />
         <AddExpense refresh={fetchData} balance={balance} />
-        {/* Pass balance to enforce the check on the frontend, although backend also checks */}
+        <SetBudget currentBudget={monthlyBudget} onBudgetUpdate={handleBudgetUpdate} />
       </div>
 
       <div className="ai-section">
-        <AIAdvice totalExpenses={totalExpenses} budgetLimit={user?.monthlyBudget || 20000} />
+        <AIAdvice totalExpenses={totalExpenses} budgetLimit={monthlyBudget} />
       </div>
 
       <div className="charts-section">
@@ -72,7 +80,7 @@ export default function Dashboard() {
           refresh={fetchData}
         />
         {userId && (
-          <div style={{display: 'flex', justifyContent: 'center', gap: '1rem'}}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
             <DownloadReport userId={userId} />
             <DownloadCSV userId={userId} />
           </div>
