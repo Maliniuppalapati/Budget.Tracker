@@ -25,7 +25,7 @@ router.post('/categorize', auth, async (req, res) => {
       return res.json({ amount, category, note: text });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const prompt = `Extract the expense amount and best category from this text: "${text}". 
     Categories can be Food & Dining, Transportation, Entertainment, Utilities, Shopping, Health, or General.
     Return ONLY a valid JSON object in this exact format: {"amount": <number>, "category": "<string>"}. Do not include markdown formatting.`;
@@ -53,7 +53,7 @@ router.get('/advice', auth, async (req, res) => {
       return res.json({ advice: `You have spent Rs. ${totalExpense} out of your Rs. ${totalIncome} income. Try to save at least 20% of your income!` });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const expenseCategories = expenses.reduce((acc, curr) => {
       acc[curr.category] = (acc[curr.category] || 0) + curr.amount;
       return acc;
