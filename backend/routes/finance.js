@@ -3,7 +3,6 @@ const auth = require('../middleware/auth');
 const Expense = require('../models/Expense');
 const Income = require('../models/Income');
 const User = require('../models/User');
-const sendEmail = require('../utils/sendEmail');
 const generatePDF = require('../utils/generatePDF');
 
 // add expense
